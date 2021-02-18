@@ -1,6 +1,6 @@
 /**class Main
  * @author Matteo Falkenberg
- * @version 1.2, 18.02.2021
+ * @version 1.3, 18.02.2021
  */
 
 package main;
@@ -15,9 +15,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/sample/sample.fxml"));
         primaryStage.setTitle("Phonebook");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root, 320, 340));
         primaryStage.show();
     }
 
