@@ -1,6 +1,6 @@
 /**class Person
  * @author Matteo Falkenberg
- * @version 1.4, 18.02.2021
+ * @version 1.5, 04.03.2021
  */
 
 package model;
@@ -16,7 +16,7 @@ public class Person {
     }
 
 
-    public String toString() {
+    public String toCSVString() {
         StringBuilder sb = new StringBuilder();
 
         sb.append(this.name + ";");

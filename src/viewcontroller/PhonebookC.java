@@ -1,9 +1,9 @@
 /**class Controller
  * @author Matteo Falkenberg
- * @version 1.4, 18.02.2021
+ * @version 1.5, 04.03.2021
  */
 
-package sample;
+package viewcontroller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import model.Person;
 import model.Telefonbuch;
 
-public class Controller {
+public class PhonebookC {
 
     @FXML private TextField nameField;
     @FXML private TextField addressField;

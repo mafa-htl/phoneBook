@@ -1,6 +1,6 @@
 /**class Telefonbuch
  * @author Matteo Falkenberg
- * @version 1.4, 18.02.2021
+ * @version 1.5, 04.03.2021
  */
 
 package model;
@@ -39,8 +39,9 @@ public class Telefonbuch {
             Scanner sc = new Scanner(new File("addressBook.csv"));
             persons.clear();
 
-            while(sc.hasNextLine()){
-                String[] data = sc.nextLine().split(";");
+            String line;
+            while((line = sc.nextLine()) != null){
+                String[] data = line.split(";");
                 addDistinct(data[0], data[1], data[2]);
             }
             sc.close();
@@ -52,16 +53,12 @@ public class Telefonbuch {
 
 
     public void saveCSV(){
-        try {
-            FileWriter fw = new FileWriter("addressBook.csv");
-            BufferedWriter bw = new BufferedWriter(fw);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("addressBook.csv"))) {
 
             for(int i = 0; i < persons.size(); i++){
-                bw.write(persons.get(i).toString());
+                bw.write(persons.get(i).toCSVString());
                 bw.newLine();
             }
-            bw.close();
-            fw.close();
         }
         catch (Exception e) {
             e.printStackTrace();
