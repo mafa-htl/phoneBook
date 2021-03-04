@@ -1,6 +1,6 @@
 /**class Main
  * @author Matteo Falkenberg
- * @version 1.5, 04.03.2021
+ * @version 1.6, 04.03.2021
  */
 
 package main;

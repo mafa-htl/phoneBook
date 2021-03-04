@@ -1,10 +1,12 @@
 /**class Controller
  * @author Matteo Falkenberg
- * @version 1.5, 04.03.2021
+ * @version 1.6, 04.03.2021
  */
 
 package viewcontroller;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -17,6 +19,7 @@ public class PhonebookC {
     @FXML private TextField addressField;
     @FXML private TextField phoneField;
     @FXML private Label posLabel;
+    @FXML private Label errLabel;
 
     private Telefonbuch phoneBook = new Telefonbuch();
     private int position = 1;
@@ -24,7 +27,16 @@ public class PhonebookC {
 
     @FXML
     public void initialize() {
+        loadFromCSV();
         updatePage();
+    }
+
+
+    @FXML
+    public void close(){
+        saveChanges();
+        saveToCSV();
+        System.out.println("Stage is closing");
     }
 
 
@@ -38,8 +50,37 @@ public class PhonebookC {
     }
 
 
+    private void saveChanges(){
+        String name = nameField.getText();
+        String address = addressField.getText();
+        String telNum = phoneField.getText();
+
+        if (checkValEmpty(name, address, telNum) == true)
+            phoneBook.changePerson(position, name, address, telNum);
+    }
+
+
+    private boolean checkValEmpty(String name, String address, String telNum){
+        if (name.equals("") || name == null) {
+            errLabel.setText("Bitte geben Sie für Name einen Wert ein!");
+            return false;
+        }
+        else if (address.equals("") || address == null) {
+            errLabel.setText("Bitte geben Sie für Adresse einen Wert ein!");
+            return false;
+        }
+        else if (telNum.equals("") || telNum == null) {
+            errLabel.setText("Bitte geben Sie für Telefonnummer einen Wert ein!");
+            return false;
+        }
+
+        return true;
+    }
+
+
     @FXML
     private void nextPerson(){
+        saveChanges();
         position++;
 
         if(position > phoneBook.getSize())
@@ -50,6 +91,7 @@ public class PhonebookC {
 
     @FXML
     private void lastPerson(){
+        saveChanges();
         position--;
 
         if(position < 1)
@@ -61,6 +103,7 @@ public class PhonebookC {
 
     @FXML
     private void addPerson(){
+        saveChanges();
         phoneBook.addEmpty();
         position = phoneBook.getSize();
         updatePage();
@@ -80,16 +123,6 @@ public class PhonebookC {
     }
 
 
-    @FXML
-    private void saveChanges(){
-        String name = nameField.getText();
-        String address = addressField.getText();
-        String telNum = phoneField.getText();
-        phoneBook.changePerson(position, name, address, telNum);
-    }
-
-
-    @FXML
     private void loadFromCSV(){
         phoneBook.load();
         position = 1;
@@ -102,7 +135,6 @@ public class PhonebookC {
     }
 
 
-    @FXML
     private void saveToCSV(){
         phoneBook.saveCSV();
     }
