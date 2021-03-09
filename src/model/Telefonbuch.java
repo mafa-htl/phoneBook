@@ -1,6 +1,6 @@
 /**class Telefonbuch
  * @author Matteo Falkenberg
- * @version 1.6, 04.03.2021
+ * @version 1.7, 09.03.2021
  */
 
 package model;
@@ -40,7 +40,8 @@ public class Telefonbuch {
             persons.clear();
 
             String line;
-            while((line = sc.nextLine()) != null){
+            while(sc.hasNextLine()){
+                line = sc.nextLine();
                 String[] data = line.split(";");
                 addDistinct(data[0], data[1], data[2]);
             }
@@ -59,6 +60,7 @@ public class Telefonbuch {
                 bw.write(persons.get(i).toCSVString());
                 bw.newLine();
             }
+            System.out.println("Save successful!");
         }
         catch (Exception e) {
             e.printStackTrace();

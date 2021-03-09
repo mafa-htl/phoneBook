@@ -1,6 +1,6 @@
 /**class Person
  * @author Matteo Falkenberg
- * @version 1.6, 04.03.2021
+ * @version 1.7, 09.03.2021
  */
 
 package model;

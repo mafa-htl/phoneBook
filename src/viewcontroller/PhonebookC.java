@@ -1,15 +1,15 @@
 /**class Controller
  * @author Matteo Falkenberg
- * @version 1.6, 04.03.2021
+ * @version 1.7, 09.03.2021
  */
 
 package viewcontroller;
 
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.WindowEvent;
 import model.Person;
 import model.Telefonbuch;
 
@@ -28,15 +28,12 @@ public class PhonebookC {
     @FXML
     public void initialize() {
         loadFromCSV();
+        main.Main.getPrimaryStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                phoneBook.saveCSV();
+            }
+        });
         updatePage();
-    }
-
-
-    @FXML
-    public void close(){
-        saveChanges();
-        saveToCSV();
-        System.out.println("Stage is closing");
     }
 
 
@@ -50,13 +47,15 @@ public class PhonebookC {
     }
 
 
-    private void saveChanges(){
+    private boolean saveChanges(){
         String name = nameField.getText();
         String address = addressField.getText();
         String telNum = phoneField.getText();
+        phoneBook.changePerson(position, name, address, telNum);
 
         if (checkValEmpty(name, address, telNum) == true)
-            phoneBook.changePerson(position, name, address, telNum);
+            return true;
+        return false;
     }
 
 
@@ -74,38 +73,40 @@ public class PhonebookC {
             return false;
         }
 
+        errLabel.setText("");
         return true;
     }
 
 
     @FXML
     private void nextPerson(){
-        saveChanges();
-        position++;
+        if(saveChanges() == true) {
+            position++;
 
-        if(position > phoneBook.getSize())
-            position = 1;
-
+            if (position > phoneBook.getSize())
+                position = 1;
+        }
         updatePage();
     }
 
     @FXML
     private void lastPerson(){
-        saveChanges();
-        position--;
+        if(saveChanges() == true) {
+            position--;
 
-        if(position < 1)
-            position = phoneBook.getSize();
-
+            if (position < 1)
+                position = phoneBook.getSize();
+        }
         updatePage();
     }
 
 
     @FXML
     private void addPerson(){
-        saveChanges();
-        phoneBook.addEmpty();
-        position = phoneBook.getSize();
+        if(saveChanges() == true) {
+            phoneBook.addEmpty();
+            position = phoneBook.getSize();
+        }
         updatePage();
     }
 
@@ -133,11 +134,5 @@ public class PhonebookC {
 
         updatePage();
     }
-
-
-    private void saveToCSV(){
-        phoneBook.saveCSV();
-    }
-
 
 }
