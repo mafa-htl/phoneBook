@@ -1,6 +1,6 @@
 /**class Person
  * @author Matteo Falkenberg
- * @version 1.7, 09.03.2021
+ * @version 1.8, 11.03.2021
  */
 
 package model;
@@ -21,7 +21,7 @@ public class Person {
 
         sb.append(this.name + ";");
         sb.append(this.address + ";");
-        sb.append(this.telNum);
+        sb.append(this.telNum.replaceAll("\\s", "/")); //replace all whitespaces with /
 
         return sb.toString();
     }

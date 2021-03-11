@@ -1,6 +1,6 @@
-/**class Controller
+/**class PhonebookC
  * @author Matteo Falkenberg
- * @version 1.7, 09.03.2021
+ * @version 1.8, 11.03.2021
  */
 
 package viewcontroller;
@@ -20,6 +20,7 @@ public class PhonebookC {
     @FXML private TextField phoneField;
     @FXML private Label posLabel;
     @FXML private Label errLabel;
+    @FXML private Label exLabel;
 
     private Telefonbuch phoneBook = new Telefonbuch();
     private int position = 1;
@@ -53,27 +54,31 @@ public class PhonebookC {
         String telNum = phoneField.getText();
         phoneBook.changePerson(position, name, address, telNum);
 
-        if (checkValEmpty(name, address, telNum) == true)
+        if (checkVal(name, address, telNum) == true)
             return true;
         return false;
     }
 
 
-    private boolean checkValEmpty(String name, String address, String telNum){
-        if (name.equals("") || name == null) {
-            errLabel.setText("Bitte geben Sie für Name einen Wert ein!");
+    private boolean checkVal(String name, String address, String telNum){
+        if (!name.matches("^\\p{Lu}\\p{L}*(?:[\\s-]\\p{L}*)*$")) {
+            errLabel.setText("Please enter a valid value for Name!");
+            exLabel.setText("");
             return false;
         }
-        else if (address.equals("") || address == null) {
-            errLabel.setText("Bitte geben Sie für Adresse einen Wert ein!");
+        else if (!address.matches("^\\p{Lu}\\p{L}*(?:[\\s-]\\p{L}*)*,?\\s\\d{3,10}$")) {
+            errLabel.setText("Please enter a valid value for Address!");
+            exLabel.setText("\"placeName, postcode\" or \"placeName postcode\"");
             return false;
         }
-        else if (telNum.equals("") || telNum == null) {
-            errLabel.setText("Bitte geben Sie für Telefonnummer einen Wert ein!");
+        else if (!telNum.matches("^\\+\\d{1,3}\\s\\d{1,3}\\s\\d{7}$")) {
+            errLabel.setText("Please enter a valid value for Phone!");
+            exLabel.setText("+123 123 1234567");
             return false;
         }
 
         errLabel.setText("");
+        exLabel.setText("");
         return true;
     }
 

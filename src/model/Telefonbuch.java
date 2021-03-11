@@ -1,6 +1,6 @@
 /**class Telefonbuch
  * @author Matteo Falkenberg
- * @version 1.7, 09.03.2021
+ * @version 1.8, 11.03.2021
  */
 
 package model;
@@ -15,12 +15,12 @@ public class Telefonbuch {
     private List<Person> persons = new ArrayList<Person>();
 
     public Telefonbuch(){
-
-        addDistinct("Hans Meier", "Wels 4600", "+43 676 71954173");
-        addDistinct("Fritz Ober", "Linz 4020", "+43 650 81910258");
-        addDistinct("Petra Aller", "Vöcklabruck 4840", "+43 664 06203672");
-        addDistinct("Marie Weger", "Attersee 4864", "+43 676 90187572");
-
+        /*
+        addDistinct("Hans Meier", "Wels 4600", "+43 676 7195417");
+        addDistinct("Fritz Ober", "Linz 4020", "+43 650 8191028");
+        addDistinct("Petra Aller", "Vöcklabruck 4840", "+43 664 0620367");
+        addDistinct("Marie Weger", "Attersee 4864", "+43 676 9018757");
+        */
     }
 
 
@@ -40,10 +40,13 @@ public class Telefonbuch {
             persons.clear();
 
             String line;
-            while(sc.hasNextLine()){
-                line = sc.nextLine();
+            while(sc.hasNextLine() && (line = sc.nextLine()) != null){
                 String[] data = line.split(";");
-                addDistinct(data[0], data[1], data[2]);
+                if(data.length == 3) {
+                    if (!data[0].isEmpty() && !data[1].isEmpty() && !data[2].isEmpty() && data[0].matches("^\\p{Lu}\\p{L}*(?:[\\s-]\\p{L}*)*$") && data[1].matches("^\\p{Lu}\\p{L}*(?:[\\s-]\\p{L}*)*,?\\s\\d{3,10}$") && data[2].matches("^\\+\\d{1,3}/\\d{1,3}/\\d{7}$")) {
+                        addDistinct(data[0], data[1], data[2].replaceAll("/", " "));
+                    }
+                }
             }
             sc.close();
         }
